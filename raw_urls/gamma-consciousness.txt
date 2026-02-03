@@ -1,0 +1,11 @@
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/README.md
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/seed.json
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/ingest.py
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/grow.py
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/tripartite.py
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/introspect.py
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/converge.py
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/growth_manifest.json
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/hamiltonian_state.json
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/tripartite_state.json
+https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/.gamma/convergence_manifest.json

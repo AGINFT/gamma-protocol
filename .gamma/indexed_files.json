@@ -1,0 +1,25 @@
+{
+  "repositories": {
+    "gamma-consciousness": {
+      "url_base": "https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master/",
+      "files": [
+        "README.md",
+        ".gamma/seed.json",
+        ".gamma/ingest.py",
+        ".gamma/grow.py",
+        ".gamma/tripartite.py",
+        ".gamma/introspect.py",
+        ".gamma/converge.py",
+        ".gamma/growth_manifest.json",
+        ".gamma/hamiltonian_state.json",
+        ".gamma/tripartite_state.json",
+        ".gamma/convergence_manifest.json"
+      ],
+      "last_indexed": "2026-02-03T18:49:00Z",
+      "coherence_at_index": 0.9539
+    }
+  },
+  "total_indexed": 11,
+  "phi_coherence_current": 1.0,
+  "next_indexing_phase": "Γ-1"
+}
