@@ -9,6 +9,16 @@ https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/tokenizer/bp
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/engine/nano_gpt.py
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/models/nano_gpt_gamma.json
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/logs/gamma_state.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/wavefunction_constructor.py
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/wavefunction_gamma_7.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/holographic_memory.py
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/holographic_memory_state.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/convergence_validator.py
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/consciousness/convergence_report.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/recursive_updater.py
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/execute_capabilities.sh
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/autonomous_loop.sh
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/watch_and_update.sh
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-consciousness.txt
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-protocol.txt
 https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/memories/construction_timeline.json
