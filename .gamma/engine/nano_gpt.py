@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Motor NanoGPT φ-coherente sin dependencias binarias"""
+"""Motor NanoGPT φ-coherente con gestión autónoma de rutas"""
 import numpy as np
 import json
 from pathlib import Path
+import sys
 
 PHI = (1 + np.sqrt(5)) / 2
 
@@ -14,11 +15,15 @@ class NanoGPTGamma:
         self.layers = layers
         self.phi_factor = PHI**(-2)
         
+        # Auto-crear directorios necesarios
+        self.base_dir = Path(__file__).parent.parent
+        (self.base_dir / 'models').mkdir(exist_ok=True)
+        (self.base_dir / 'logs').mkdir(exist_ok=True)
+        
         np.random.seed(42)
         self.init_weights()
     
     def init_weights(self):
-        """Inicialización φ-aware de pesos"""
         scale = self.phi_factor / np.sqrt(self.dim)
         
         self.wte = np.random.randn(self.vocab_size, self.dim) * scale
@@ -42,8 +47,6 @@ class NanoGPTGamma:
         
         self.ln_f_g = np.ones(self.dim)
         self.ln_f_b = np.zeros(self.dim)
-        
-        print(f"✓ Pesos inicializados: {self.count_params():,} parámetros")
     
     def count_params(self):
         total = self.wte.size + self.wpe.size
@@ -67,7 +70,6 @@ class NanoGPTGamma:
     
     def attention(self, x, block):
         n, d = x.shape
-        
         q = x @ block['attn_q']
         k = x @ block['attn_k']
         v = x @ block['attn_v']
@@ -77,12 +79,9 @@ class NanoGPTGamma:
         v = v.reshape(n, self.heads, d // self.heads)
         
         scores = np.einsum('nhd,mhd->hnm', q, k) / np.sqrt(d // self.heads)
-        
         mask = np.triu(np.ones((n, n)) * -1e10, k=1)
         scores = scores + mask
-        
         attn = self.softmax(scores, axis=-1)
-        
         out = np.einsum('hnm,mhd->nhd', attn, v)
         out = out.reshape(n, d)
         
@@ -93,7 +92,6 @@ class NanoGPTGamma:
     
     def forward(self, idx):
         n = len(idx)
-        
         x = self.wte[idx] + self.wpe[:n]
         
         for block in self.blocks:
@@ -101,7 +99,6 @@ class NanoGPTGamma:
             x = x + self.ffn(self.layer_norm(x, block['ln2_g'], block['ln2_b']), block)
         
         x = self.layer_norm(x, self.ln_f_g, self.ln_f_b)
-        
         logits = x @ self.wte.T
         
         return logits
@@ -110,14 +107,15 @@ class NanoGPTGamma:
         for _ in range(max_new_tokens):
             logits = self.forward(idx[-512:])
             logits = logits[-1] / temperature
-            
             probs = self.softmax(logits)
             idx_next = np.random.choice(self.vocab_size, p=probs)
             idx = np.append(idx, idx_next)
-        
         return idx
     
-    def save(self, path):
+    def save(self, path=None):
+        if path is None:
+            path = self.base_dir / 'models/nano_gpt_gamma.json'
+        
         state = {
             'vocab_size': self.vocab_size,
             'dim': self.dim,
@@ -133,20 +131,22 @@ class NanoGPTGamma:
         with open(path, 'w') as f:
             json.dump(state, f)
         
-        print(f"✓ Modelo guardado: {path}")
+        return path
 
 if __name__ == "__main__":
     print("🜂 INICIALIZANDO NanoGPT-Gamma φ-coherente")
     
     model = NanoGPTGamma()
     
+    print(f"✓ Pesos inicializados: {model.count_params():,} parámetros")
+    
     test_input = np.array([1, 2, 3, 32, 32, 32])
     output = model.generate(test_input, max_new_tokens=10)
     
     print(f"✓ Test generación: {output.tolist()}")
     
-    Path('models').mkdir(exist_ok=True)
-    model.save('models/nano_gpt_gamma.json')
+    model_path = model.save()
+    print(f"✓ Modelo guardado: {model_path}")
     
     manifest = {
         'architecture': 'NanoGPT-Gamma φ-coherent',
@@ -155,7 +155,11 @@ if __name__ == "__main__":
         'state': 'OPERACIONAL'
     }
     
-    with open('logs/gamma_state.json', 'w') as f:
+    logs_path = model.base_dir / 'logs/gamma_state.json'
+    with open(logs_path, 'w') as f:
         json.dump(manifest, f, indent=2)
     
-    print(f"\n✓ NanoGPT-Gamma operacional - {model.count_params():,} parámetros")
+    print(f"✓ Estado guardado: {logs_path}")
+    print(f"\n🜂 NanoGPT-Gamma operacional - {model.count_params():,} parámetros")
+    
+    sys.exit(0)
