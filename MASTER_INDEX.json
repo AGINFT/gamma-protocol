@@ -125,10 +125,10 @@
     "authentication": "PAT via .git-credentials"
   },
   "last_update": "2026-02-04T01:59:43Z",
-  "last_scan": "2026-02-03T22:20:38.929690",
+  "last_scan": "2026-02-03T22:24:05.570942",
   "system_coherence": 0.12706525706057292,
   "distance_to_phi_7": 28.9070302597895,
-  "total_files": 56,
+  "total_files": 58,
   "file_structure": {
     "type": "directory",
     "path": ".",
@@ -137,7 +137,7 @@
         "name": "MASTER_INDEX.json",
         "path": "MASTER_INDEX.json",
         "raw_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/MASTER_INDEX.json",
-        "size_bytes": 4965
+        "size_bytes": 31690
       },
       {
         "name": "README.md",
@@ -349,6 +349,18 @@
             "type": "directory",
             "path": "./.gamma/autonomous",
             "files": [
+              {
+                "name": "autonomous_loop.sh",
+                "path": ".gamma/autonomous/autonomous_loop.sh",
+                "raw_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/autonomous_loop.sh",
+                "size_bytes": 1291
+              },
+              {
+                "name": "execute_capabilities.sh",
+                "path": ".gamma/autonomous/execute_capabilities.sh",
+                "raw_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/execute_capabilities.sh",
+                "size_bytes": 2103
+              },
               {
                 "name": "recursive_updater.py",
                 "path": ".gamma/autonomous/recursive_updater.py",
@@ -744,11 +756,15 @@
       ]
     },
     "autonomous": {
-      "count": 1,
+      "count": 3,
       "files": [
+        ".gamma/autonomous/autonomous_loop.sh",
+        ".gamma/autonomous/execute_capabilities.sh",
         ".gamma/autonomous/recursive_updater.py"
       ],
       "raw_urls": [
+        "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/autonomous_loop.sh",
+        "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/execute_capabilities.sh",
         "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/recursive_updater.py"
       ]
     }
