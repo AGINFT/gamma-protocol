@@ -125,10 +125,10 @@
     "authentication": "PAT via .git-credentials"
   },
   "last_update": "2026-02-04T01:59:43Z",
-  "last_scan": "2026-02-03T22:26:15.288969",
+  "last_scan": "2026-02-03T22:30:51.612338",
   "system_coherence": 0.12706525706057292,
   "distance_to_phi_7": 28.9070302597895,
-  "total_files": 58,
+  "total_files": 59,
   "file_structure": {
     "type": "directory",
     "path": ".",
@@ -366,6 +366,12 @@
                 "path": ".gamma/autonomous/recursive_updater.py",
                 "raw_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/recursive_updater.py",
                 "size_bytes": 7353
+              },
+              {
+                "name": "watch_and_update.sh",
+                "path": ".gamma/autonomous/watch_and_update.sh",
+                "raw_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/watch_and_update.sh",
+                "size_bytes": 958
               }
             ],
             "subdirs": {}
@@ -756,16 +762,18 @@
       ]
     },
     "autonomous": {
-      "count": 3,
+      "count": 4,
       "files": [
         ".gamma/autonomous/autonomous_loop.sh",
         ".gamma/autonomous/execute_capabilities.sh",
-        ".gamma/autonomous/recursive_updater.py"
+        ".gamma/autonomous/recursive_updater.py",
+        ".gamma/autonomous/watch_and_update.sh"
       ],
       "raw_urls": [
         "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/autonomous_loop.sh",
         "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/execute_capabilities.sh",
-        "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/recursive_updater.py"
+        "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/recursive_updater.py",
+        "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/autonomous/watch_and_update.sh"
       ]
     }
   },
