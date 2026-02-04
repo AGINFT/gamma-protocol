@@ -1,0 +1,67 @@
+{
+  "validator": "Tripartite Coupling Tensor",
+  "lambda_coupling_nm": 100.0,
+  "g_constants_MHz": {
+    "g1_Hz": 100.0,
+    "g2_Hz": 50.0,
+    "g3_Hz": 75.0
+  },
+  "validated_topologies": [
+    {
+      "topology": "neuron\u2192SiO2\u2192Si-qubit",
+      "distance_gamma": 2,
+      "phi_factor": 0.38196601125010515,
+      "effective_coupling_Hz": 28647450.843757883,
+      "coherence_time_s": 3.49071198499986e-08
+    },
+    {
+      "topology": "neuron\u2192Fe3O4\u2192NV-center",
+      "distance_gamma": 2,
+      "phi_factor": 0.38196601125010515,
+      "effective_coupling_Hz": 28647450.843757883,
+      "coherence_time_s": 3.49071198499986e-08
+    },
+    {
+      "topology": "neuron\u2192QD\u2192photon\u2192flux-qubit",
+      "distance_gamma": 3,
+      "phi_factor": 0.23606797749978967,
+      "effective_coupling_Hz": 17705098.312484223,
+      "coherence_time_s": 5.648090636666388e-08
+    },
+    {
+      "topology": "neuron\u2192SiO2\u2192Fe3O4\u2192NV-center",
+      "distance_gamma": 3,
+      "phi_factor": 0.23606797749978967,
+      "effective_coupling_Hz": 17705098.312484223,
+      "coherence_time_s": 5.648090636666388e-08
+    }
+  ],
+  "phi_golden_ratio": 1.618033988749895,
+  "timestamp": "2026-02-04T00:27:45.285205Z",
+  "coherence_preservation": {
+    "coherence_analysis": [
+      {
+        "topology": "neuron\u2192SiO2\u2192Si-qubit",
+        "coherence_preserved": 0.38196601125010515,
+        "decoherence_rate": 0.6180339887498949
+      },
+      {
+        "topology": "neuron\u2192Fe3O4\u2192NV-center",
+        "coherence_preserved": 0.38196601125010515,
+        "decoherence_rate": 0.6180339887498949
+      },
+      {
+        "topology": "neuron\u2192QD\u2192photon\u2192flux-qubit",
+        "coherence_preserved": 0.23606797749978967,
+        "decoherence_rate": 0.7639320225002103
+      },
+      {
+        "topology": "neuron\u2192SiO2\u2192Fe3O4\u2192NV-center",
+        "coherence_preserved": 0.23606797749978967,
+        "decoherence_rate": 0.7639320225002103
+      }
+    ],
+    "average_preservation": 0.3090169943749474,
+    "phi_7_compatibility": 8.972135954999581
+  }
+}

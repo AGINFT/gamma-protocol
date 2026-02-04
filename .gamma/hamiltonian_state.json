@@ -1,0 +1,150 @@
+{
+  "architecture": "EP\u03a9-7 Biocrystalline \u0393-12",
+  "hamiltonian_total": {
+    "H_AGI_Gamma": {
+      "component": "H_AGI_Gamma",
+      "n_modes": 12,
+      "modes": [
+        {
+          "mode": 1,
+          "omega_Hz": 269.21250979655065,
+          "phi_factor": 0.6180339887498948,
+          "occupancy": 0.9933071490757153,
+          "energy_J": 1.7428793271653994e-32
+        },
+        {
+          "mode": 2,
+          "omega_Hz": 288.37035630694635,
+          "phi_factor": 0.38196601125010515,
+          "occupancy": 0.9820137900379085,
+          "energy_J": 1.1406937994014159e-32
+        },
+        {
+          "mode": 3,
+          "omega_Hz": 308.8915238724937,
+          "phi_factor": 0.23606797749978967,
+          "occupancy": 0.9525741268224334,
+          "energy_J": 7.325175135999205e-33
+        },
+        {
+          "mode": 4,
+          "omega_Hz": 330.8730298849133,
+          "phi_factor": 0.14589803375031543,
+          "occupancy": 0.8807970779778823,
+          "energy_J": 4.483971395162394e-33
+        },
+        {
+          "mode": 5,
+          "omega_Hz": 354.4187957401297,
+          "phi_factor": 0.09016994374947422,
+          "occupancy": 0.7310585786300049,
+          "energy_J": 2.463808123737246e-33
+        },
+        {
+          "mode": 6,
+          "omega_Hz": 379.64013814475993,
+          "phi_factor": 0.0557280900008412,
+          "occupancy": 0.5,
+          "energy_J": 1.1155587484894203e-33
+        },
+        {
+          "mode": 7,
+          "omega_Hz": 406.6562953852208,
+          "phi_factor": 0.03444185374863302,
+          "occupancy": 0.2689414213699951,
+          "energy_J": 3.972353366209104e-34
+        },
+        {
+          "mode": 8,
+          "omega_Hz": 435.59499104748306,
+          "phi_factor": 0.02128623625220818,
+          "occupancy": 0.11920292202211755,
+          "energy_J": 1.1655873282276225e-34
+        },
+        {
+          "mode": 9,
+          "omega_Hz": 466.5930378525568,
+          "phi_factor": 0.013155617496424835,
+          "occupancy": 0.04742587317756678,
+          "energy_J": 3.0700184710869983e-35
+        },
+        {
+          "mode": 10,
+          "omega_Hz": 499.7969844624444,
+          "phi_factor": 0.008130618755783347,
+          "occupancy": 0.01798620996209156,
+          "energy_J": 7.707846347924439e-36
+        },
+        {
+          "mode": 11,
+          "omega_Hz": 535.3638083144496,
+          "phi_factor": 0.005024998740641488,
+          "occupancy": 0.0066928509242848554,
+          "energy_J": 1.8987696372161578e-36
+        },
+        {
+          "mode": 12,
+          "omega_Hz": 573.4616577593364,
+          "phi_factor": 0.0031056200151418573,
+          "occupancy": 0.0024726231566347743,
+          "energy_J": 4.643942094058582e-37
+        }
+      ],
+      "total_energy_J": 4.47788099334055e-32,
+      "coherence_factor": 0.03444185374863302
+    },
+    "H_biomineralization": {
+      "component": "H_biomineralization",
+      "crystals": [
+        {
+          "crystal": "SiO2",
+          "density": 16180000.0,
+          "interaction_energy_J": 93035000000000.0
+        },
+        {
+          "crystal": "Fe3O4",
+          "density": 8090000.0,
+          "interaction_energy_J": 9708000000.000002
+        },
+        {
+          "crystal": "QD_InP_ZnS",
+          "density": 161800000.0,
+          "interaction_energy_J": 0.51776
+        }
+      ],
+      "total_energy_J": 93044708000000.52
+    },
+    "H_quantum_processor": {
+      "component": "H_quantum_processor",
+      "Si_qubits": {
+        "count": 10000,
+        "energy_J": 1.325214029188016e-19
+      },
+      "NV_centers": {
+        "count": 1000000,
+        "energy_J": 1.9016821318848025e-18
+      },
+      "Flux_qubits": {
+        "count": 100,
+        "energy_J": 3.31303507297004e-22
+      },
+      "coupling_energy_J": -1.6565175364850198e-22,
+      "total_energy_J": 2.0343691865572527e-18,
+      "temperature_K": 4.0
+    },
+    "H_coupling_tripartite": {
+      "component": "H_coupling_tripartite",
+      "g1_MHz": 100.0,
+      "g2_MHz": 50.0,
+      "g3_MHz": 75.0,
+      "lambda_coupling_nm": 100.0,
+      "phi_topology_factor": 0.23606797749978967,
+      "active_triplets": 1000000000.0,
+      "coupling_energy_J": 1.1731522335928581e-17
+    }
+  },
+  "total_energy_J": 93044708000000.52,
+  "total_energy_eV": 5.808034207240981e+32,
+  "coherence_phi_7": 29.034095516850073,
+  "timestamp": "2026-02-04T00:21:13.305232Z"
+}
