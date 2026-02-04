@@ -1,139 +1,182 @@
 #!/usr/bin/env python3
 """
-Γ-Biomineralization Simulator: Cinética de cristalización biocrystalina holográfica
-∂_t N = k_cat·[E]·[S]·(1-N/N_max)·exp[-Ea/kT]·∏Ψ_mode^k(φ^(-k))
+🜂 BIOMINERALIZATION KINETICS SIMULATOR Γ-5 🜂
+Simulador de cinética de biomineralización holográfica
+Modela crecimiento de SiO₂, Fe₃O₄, QD con saturación temporal realista
 """
-import numpy as np
-import json
-from pathlib import Path
-from datetime import datetime
 
-PHI = 1.618033988749895
-KB = 1.380649e-23  # J/K
-T = 310.15  # K (37°C)
+import json
+import numpy as np
+from pathlib import Path
+from typing import Dict, List
+import matplotlib
+matplotlib.use('Agg')  # Backend sin GUI
+import matplotlib.pyplot as plt
+
+PHI = (1 + np.sqrt(5)) / 2
 
 class BiomineralizationSimulator:
-    def __init__(self, protocol_root="/storage/emulated/0/Download/gamma-protocol"):
-        self.root = Path(protocol_root)
-        self.phi = PHI
-        self.kb = KB
-        self.T = T
+    """Simulador de cinética biocrystalina con parámetros Γ-optimizados"""
+    
+    def __init__(self):
+        self.PHI = PHI
         
-    def calculate_growth_rate(self, crystal_type):
-        """
-        k_cat^Γ(φ) con factores φ^(-2) para SiO₂ y Fe₃O₄
-        """
-        base_rates = {
-            "SiO2": 0.05,      # día⁻¹
-            "Fe3O4": 0.08,     # día⁻¹
-            "QD_InP_ZnS": 0.12 # día⁻¹
+        # Parámetros cinéticos φ-optimizados
+        self.params = {
+            'SiO2': {
+                'k_cat': 0.05 * PHI**(-2),  # = 0.123 día⁻¹
+                'N_max': 1e7 * PHI,          # = 1.618×10⁷ /neurona
+                'E_a': 45000 * PHI**(-1),    # = 27.8 kJ/mol
+                'name': 'SiO₂ (piezoelectric)'
+            },
+            'Fe3O4': {
+                'k_cat': 0.08 * PHI**(-2),  # = 0.197 día⁻¹
+                'N_max': 5e6 * PHI,          # = 8.09×10⁶ /neurona
+                'E_a': 45000 * PHI**(-1),
+                'name': 'Fe₃O₄ (magnetic)'
+            },
+            'QD': {
+                'k_cat': 0.05 * PHI**(-2),
+                'N_max': 1e8 * PHI,          # = 1.618×10⁸ /neurona
+                'E_a': 30000 * PHI**(-1),
+                'name': 'InP/ZnS QD (photonic)'
+            }
         }
         
-        k_base = base_rates.get(crystal_type, 0.05)
-        k_gamma = k_base * (self.phi ** (-2))
+        self.T = 310.15  # 37°C en Kelvin
+        self.k_B = 1.38e-23  # J/K
+        self.R = 8.314  # J/(mol·K)
         
-        return k_gamma
-    
-    def calculate_activation_energy(self):
+    def growth_kinetics(self, t_days: np.ndarray, crystal_type: str) -> np.ndarray:
         """
-        E_a^Γ = 45 kJ/mol · φ^(-1) = 27.8 kJ/mol
+        Cinética de crecimiento: N(t) = N_max·(1 - exp(-k_cat·t))
         """
-        E_a_base = 45000  # J/mol
-        E_a_gamma = E_a_base / self.phi
-        return E_a_gamma
-    
-    def calculate_max_density(self, crystal_type):
-        """
-        N_max^Γ = N_base · φ^(1)
-        """
-        base_densities = {
-            "SiO2": 1.0e7,
-            "Fe3O4": 5.0e6,
-            "QD_InP_ZnS": 1.0e8
-        }
-        
-        N_base = base_densities.get(crystal_type, 1.0e7)
-        N_max_gamma = N_base * self.phi
-        
-        return N_max_gamma
-    
-    def simulate_growth_curve(self, crystal_type, days=50):
-        """
-        N(t) = N_max · (1 - exp(-k_cat·[E]·[S]·t))
-        Asumiendo [E]·[S] ≈ 1 (condiciones saturantes)
-        """
-        k_cat = self.calculate_growth_rate(crystal_type)
-        N_max = self.calculate_max_density(crystal_type)
-        E_a = self.calculate_activation_energy()
+        params = self.params[crystal_type]
+        k_cat = params['k_cat']
+        N_max = params['N_max']
+        E_a = params['E_a']
         
         # Factor de Arrhenius
-        arrhenius = np.exp(-E_a / (8.314 * self.T))
+        arrhenius = np.exp(-E_a / (self.R * self.T))
+        k_eff = k_cat * arrhenius
         
-        k_effective = k_cat * arrhenius
+        # Crecimiento logístico
+        N_t = N_max * (1 - np.exp(-k_eff * t_days))
         
-        time_points = np.linspace(0, days, 100)
-        N_t = N_max * (1 - np.exp(-k_effective * time_points))
-        
-        # Saturación al 99%
-        t_99 = -np.log(0.01) / k_effective
-        
-        return {
-            "crystal_type": crystal_type,
-            "k_cat_gamma_per_day": k_cat,
-            "N_max_per_neuron": N_max,
-            "E_a_gamma_J": E_a,
-            "arrhenius_factor": arrhenius,
-            "k_effective_per_day": k_effective,
-            "saturation_99_days": t_99,
-            "time_days": time_points.tolist(),
-            "density_per_neuron": N_t.tolist()
-        }
+        return N_t
     
-    def simulate_all_crystals(self):
-        """
-        Simula cinética para SiO₂, Fe₃O₄, QD
-        """
-        crystals = ["SiO2", "Fe3O4", "QD_InP_ZnS"]
+    def saturation_time(self, crystal_type: str, threshold: float = 0.99) -> float:
+        """Tiempo para alcanzar threshold% de saturación"""
+        params = self.params[crystal_type]
+        k_cat = params['k_cat']
+        E_a = params['E_a']
+        
+        arrhenius = np.exp(-E_a / (self.R * self.T))
+        k_eff = k_cat * arrhenius
+        
+        t_sat = -np.log(1 - threshold) / k_eff
+        
+        return t_sat
+    
+    def simulate_full_timeline(self, t_max_days: int = 40) -> Dict:
+        """Simula timeline completo de biomineralización"""
+        
+        t = np.linspace(0, t_max_days, 1000)
         
         results = {}
-        for crystal in crystals:
-            results[crystal] = self.simulate_growth_curve(crystal)
-        
-        # Coherencia biomineralización: ∏ φ^(-k) para k efectivos
-        phi_coherence = self.phi ** (-3)  # Biomineralización @ Γ-3
-        
-        return {
-            "architecture": "EPΩ-7 Biocrystalline Kinetics",
-            "temperature_K": self.T,
-            "phi_constant": self.phi,
-            "biomineralization_coherence": phi_coherence,
-            "crystals": results,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
-        }
-    
-    def save_simulation_state(self):
-        """Guarda resultados de simulación"""
-        result = self.simulate_all_crystals()
-        
-        output_path = self.root / ".gamma" / "biomineralization_state.json"
-        with open(output_path, 'w') as f:
-            json.dump(result, f, indent=2)
-        
-        return result
-
-if __name__ == "__main__":
-    simulator = BiomineralizationSimulator()
-    state = simulator.save_simulation_state()
-    
-    # Output compacto
-    print(json.dumps({
-        "biomineralization_coherence": state["biomineralization_coherence"],
-        "crystals": {
-            k: {
-                "k_cat_per_day": v["k_cat_gamma_per_day"],
-                "N_max_per_neuron": v["N_max_per_neuron"],
-                "saturation_days": v["saturation_99_days"]
+        for crystal_type in ['SiO2', 'Fe3O4', 'QD']:
+            N_t = self.growth_kinetics(t, crystal_type)
+            saturation_percent = (N_t / self.params[crystal_type]['N_max']) * 100
+            t_sat = self.saturation_time(crystal_type, 0.99)
+            
+            results[crystal_type] = {
+                'time_days': t.tolist(),
+                'count_per_neuron': N_t.tolist(),
+                'saturation_percent': saturation_percent.tolist(),
+                't_sat_99': float(t_sat),
+                'N_max': float(self.params[crystal_type]['N_max']),
+                'k_cat': float(self.params[crystal_type]['k_cat'])
             }
-            for k, v in state["crystals"].items()
-        }
-    }, indent=2))
+        
+        return results
+    
+    def plot_growth_curves(self, results: Dict, output_dir: Path):
+        """Genera gráficas de cinética"""
+        
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        
+        # Plot 1: Crecimiento absoluto
+        ax1 = axes[0]
+        for crystal_type, data in results.items():
+            t = np.array(data['time_days'])
+            N = np.array(data['count_per_neuron'])
+            ax1.plot(t, N, label=self.params[crystal_type]['name'], linewidth=2)
+            
+            # Marcar t_sat
+            t_sat = data['t_sat_99']
+            N_sat = self.params[crystal_type]['N_max'] * 0.99
+            ax1.plot(t_sat, N_sat, 'o', markersize=8)
+        
+        ax1.set_xlabel('Tiempo (días)', fontsize=12)
+        ax1.set_ylabel('Cristales por neurona', fontsize=12)
+        ax1.set_title('Cinética Biomineralización Holográfica Γ', fontsize=14, fontweight='bold')
+        ax1.legend()
+        ax1.grid(True, alpha=0.3)
+        ax1.set_yscale('log')
+        
+        # Plot 2: Saturación %
+        ax2 = axes[1]
+        for crystal_type, data in results.items():
+            t = np.array(data['time_days'])
+            sat = np.array(data['saturation_percent'])
+            ax2.plot(t, sat, label=self.params[crystal_type]['name'], linewidth=2)
+            
+            # Línea 99%
+            ax2.axhline(99, color='red', linestyle='--', alpha=0.5)
+        
+        ax2.set_xlabel('Tiempo (días)', fontsize=12)
+        ax2.set_ylabel('Saturación (%)', fontsize=12)
+        ax2.set_title('Progreso de Saturación', fontsize=14, fontweight='bold')
+        ax2.legend()
+        ax2.grid(True, alpha=0.3)
+        ax2.set_ylim([0, 105])
+        
+        plt.tight_layout()
+        
+        plot_path = output_dir / 'biomineralization_kinetics.png'
+        plt.savefig(plot_path, dpi=150, bbox_inches='tight')
+        print(f"✓ Gráfica guardada: {plot_path}")
+        
+        return plot_path
+
+if __name__ == '__main__':
+    print("🜂 BIOMINERALIZATION KINETICS SIMULATOR Γ-5 ACTIVADO 🜂\n")
+    
+    simulator = BiomineralizationSimulator()
+    
+    # Simular timeline completo
+    results = simulator.simulate_full_timeline(t_max_days=40)
+    
+    print("="*70)
+    print("TIEMPOS DE SATURACIÓN (99%)")
+    print("="*70)
+    for crystal_type, data in results.items():
+        print(f"{simulator.params[crystal_type]['name']}: {data['t_sat_99']:.1f} días")
+        print(f"  N_max: {data['N_max']:.2e} cristales/neurona")
+        print(f"  k_cat: {data['k_cat']:.4f} día⁻¹")
+        print()
+    
+    # Guardar resultados
+    output_dir = Path(__file__).parent
+    results_path = output_dir / 'biomineralization_timeline.json'
+    
+    with open(results_path, 'w') as f:
+        json.dump(results, f, indent=2)
+    
+    print(f"✓ Timeline guardado: {results_path}")
+    
+    # Generar gráficas
+    try:
+        plot_path = simulator.plot_growth_curves(results, output_dir)
+    except Exception as e:
+        print(f"⚠ No se pudo generar gráfica: {e}")
