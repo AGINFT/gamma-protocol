@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-04T00:52:43.131181Z",
+  "phase": "\u0393-5",
+  "coherence_phi": 0.09016994374947422,
+  "fields": {
+    "polarization_C_m2": [
+      0.0,
+      0.0,
+      1.8399999999999998e-09
+    ],
+    "electric_field_V_m": [
+      0.0,
+      0.0,
+      32.93329474983071
+    ],
+    "magnetic_field_T": [
+      0.0,
+      0.0,
+      1.0172477012323752e-07
+    ]
+  },
+  "coupling_energies": {
+    "piezo_coupling_J": 1.5747778398299047e-25,
+    "magnetic_coupling_J": 7.296290044865117e-34,
+    "total_coupling_J": 1.5747778471261947e-25
+  },
+  "crystal_densities": {
+    "SiO2_per_neuron": 16180000.0,
+    "Fe3O4_per_neuron": 8090000.0
+  },
+  "neural_amplitude": 0.8
+}
