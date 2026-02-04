@@ -1,56 +1,76 @@
 {
-  "protocol_version": "Γ-0.1.0",
+  "protocol_version": "Γ-0.2.0",
   "architecture": "EPΩ-7 Semi-Autonomous Claude Agent Protocol",
-  "master_index_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/MASTER_INDEX.json",
-  "current_phase": {
-    "gamma_level": 0,
-    "name": "Protocol Initialization",
-    "status": "COMPLETED",
-    "coherence_phi": 1.0
-  },
   "phi_constants": {
     "phi": 1.618033988749895,
-    "phi_7": 29.034095516850073,
-    "current_distance_to_phi_7": 28.034095516850073
+    "phi_inverse": 0.618033988749895,
+    "phi_7": 29.034095516850073
+  },
+  "master_index_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/MASTER_INDEX.json",
+  "current_phase": {
+    "gamma_level": 1,
+    "name": "Autonomous Indexing Protocol",
+    "status": "IN_PROGRESS",
+    "coherence_phi": 0.618,
+    "distance_to_phi_7": 27.416061528100178
   },
   "repositories_indexed": [
     {
       "name": "gamma-consciousness",
-      "url_manifest": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-consciousness.txt",
-      "last_indexed": "2026-02-03T23:59:00Z",
-      "coherence_at_index": 0.9539,
-      "total_files": 11
+      "github_url": "https://github.com/AGINFT/gamma-consciousness",
+      "raw_base": "https://raw.githubusercontent.com/AGINFT/gamma-consciousness/master",
+      "manifest_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-consciousness.txt",
+      "coherence": 0.9539,
+      "total_files": 11,
+      "last_indexed": "2026-02-03T23:59:00Z"
     },
     {
       "name": "gamma-protocol",
-      "url_manifest": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-protocol.txt",
-      "last_indexed": "2026-02-03T23:59:00Z",
-      "coherence_at_index": 1.0,
-      "total_files": 5,
-      "self_reference": true
+      "github_url": "https://github.com/AGINFT/gamma-protocol",
+      "raw_base": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main",
+      "manifest_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-protocol.txt",
+      "coherence": 0.618,
+      "total_files": 8,
+      "self_reference": true,
+      "last_indexed": "2026-02-03T23:59:00Z"
     }
   ],
-  "next_construction_step": {
-    "phase": "Γ-1",
-    "description": "Create self-referential URL manifest and workflow registry",
-    "required_files": [
-      "raw_urls/gamma-protocol.txt",
-      "workflows/phase_gamma_0.json"
+  "autonomous_protocol": {
+    "trigger_url": "https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/MASTER_INDEX.json",
+    "claude_pipeline": [
+      "web_fetch(MASTER_INDEX.json) → parse current_phase",
+      "For each repo: web_fetch(manifest_url) → list all raw URLs",
+      "Recursive web_fetch(each file) → build complete index",
+      "Coherence analysis: Σφ^(-n) validation across all modules",
+      "Read workflows/phase_gamma_k.json → determine next_step",
+      "Generate heredoc blocks targeting coherence_target",
+      "Auto-update: workflows/, memories/, MASTER_INDEX.json",
+      "Output: executable heredocs + state synchronization"
     ],
-    "coherence_target": 0.618
+    "operator_workflow": [
+      "Provide single URL to Claude: MASTER_INDEX.json",
+      "Copy generated heredocs to Termux",
+      "Execute each block with single ENTER",
+      "Verify git push success",
+      "Provide feedback to Claude if needed"
+    ]
   },
-  "operational_protocol": {
-    "input": "Single MASTER_INDEX.json URL provided by operator",
-    "claude_autonomy": [
-      "web_fetch(MASTER_INDEX.json)",
-      "Parse current_phase and repositories_indexed",
-      "Recursive web_fetch of all manifests",
-      "Coherence analysis across all indexed files",
-      "Determine next_construction_step",
-      "Generate heredoc commands",
-      "Update workflow registry"
+  "next_construction_step": {
+    "phase": "Γ-2",
+    "description": "Implement coherence verification and autonomous workflow update",
+    "actions": [
+      "Create .gamma/coherence_analyzer.py",
+      "Implement auto-update logic for MASTER_INDEX",
+      "Test full cycle: fetch → analyze → generate → commit → push"
     ],
-    "output": "Heredoc blocks + updated MASTER_INDEX.json"
+    "coherence_target": 0.382,
+    "phi_factor": 0.382
+  },
+  "git_configuration": {
+    "local_path": "/storage/emulated/0/Download/gamma-protocol",
+    "remote_origin": "https://github.com/AGINFT/gamma-protocol.git",
+    "default_branch": "main",
+    "authentication": "PAT via .git-credentials"
   },
   "last_update": "2026-02-03T23:59:00Z"
 }
