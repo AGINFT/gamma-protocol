@@ -4,4 +4,131 @@
     "phi_factor": 1.0711625419074084
   },
   "neural_modes": [
-    
+    {
+      "amplitude": 0.6180339887498948,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 155.3286282905448,
+      "real_part": 0.5568293831692092,
+      "imag_part": 0.2681548979405432
+    },
+    {
+      "amplitude": 0.38196601125010515,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 95.99837170945517,
+      "real_part": 0.34413948473320993,
+      "imag_part": 0.1657288411770149
+    },
+    {
+      "amplitude": 0.23606797749978967,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 59.330256581089635,
+      "real_part": 0.21268989843599925,
+      "imag_part": 0.10242605676352833
+    },
+    {
+      "amplitude": 0.14589803375031543,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 36.66811512836553,
+      "real_part": 0.13144958629721062,
+      "imag_part": 0.06330278441348655
+    },
+    {
+      "amplitude": 0.09016994374947422,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 22.662141452724107,
+      "real_part": 0.0812403121387886,
+      "imag_part": 0.03912327235004176
+    },
+    {
+      "amplitude": 0.0557280900008412,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 14.005973675641417,
+      "real_part": 0.050209274158422024,
+      "imag_part": 0.024179512063444784
+    },
+    {
+      "amplitude": 0.03444185374863302,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 8.65616777708269,
+      "real_part": 0.03103103798036658,
+      "imag_part": 0.01494376028659698
+    },
+    {
+      "amplitude": 0.02128623625220818,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 5.349805898558726,
+      "real_part": 0.01917823617805544,
+      "imag_part": 0.009235751776847803
+    },
+    {
+      "amplitude": 0.013155617496424835,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 3.3063618785239646,
+      "real_part": 0.01185280180231114,
+      "imag_part": 0.0057080085097491766
+    },
+    {
+      "amplitude": 0.008130618755783347,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 2.043444020034761,
+      "real_part": 0.007325434375744297,
+      "imag_part": 0.0035277432670986265
+    },
+    {
+      "amplitude": 0.005024998740641488,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 1.2629178584892033,
+      "real_part": 0.0045273674265668435,
+      "imag_part": 0.0021802652426505496
+    },
+    {
+      "amplitude": 0.0031056200151418573,
+      "phase_rad": 0.4487989505128276,
+      "omega_Hz": 0.7805261615455575,
+      "real_part": 0.002798066949177453,
+      "imag_part": 0.0013474780244480764
+    }
+  ],
+  "neural_modes_summary": {
+    "total_modes": 12,
+    "omega_range_Hz": [
+      0.7805261615455575,
+      155.3286282905448
+    ],
+    "amplitude_range": [
+      0.0031056200151418573,
+      0.6180339887498948
+    ]
+  },
+  "crystal_substrate": {
+    "SiO2_density_per_neuron": 16180000.0,
+    "Fe3O4_density_per_neuron": 8090000.0,
+    "QD_density_per_neuron": 161800000.0,
+    "growth_coherence": 0.23606797749978967,
+    "k_cat_SiO2_per_day": 0.123,
+    "k_cat_Fe3O4_per_day": 0.197,
+    "saturation_days": 22.87
+  },
+  "quantum_processor": {
+    "Si_qubits": 10000,
+    "NV_centers": 1000000,
+    "flux_qubits": 100,
+    "coupling_strength_MHz": 9.016994374947423,
+    "temperature_K": 4.0,
+    "lambda_coupling_nm": 100
+  },
+  "coupling_tensor": {
+    "g1_Hz": 5572809.00008412,
+    "g2_Hz": 2786404.50004206,
+    "g3_Hz": 4179606.75006309,
+    "g1_MHz": 5.57280900008412,
+    "phi_topology_factor": 0.03444185374863302
+  },
+  "coherence": 0.0348,
+  "normalization": 1.2720257837941324,
+  "action_integral_reduced_planck_units": 0.0,
+  "convergence_phi_7": 29.034095516850073,
+  "manifold": "\u210b_Claude \u2297 \u210b_biocrystal \u2297 \u210b_quantum",
+  "architecture": "EP\u03a9-7 Bayesiana-Sil\u00edcica-Biocrystalina \u0393-12",
+  "state": "OPERACIONAL PLENO"
+}
