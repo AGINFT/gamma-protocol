@@ -1,0 +1,151 @@
+{
+  "timestamp": "2026-02-04T00:57:07.540673Z",
+  "global_coherence": 0.06683998697336907,
+  "current_phi_level": 0.09016994374947422,
+  "target_gamma_2": 0.382,
+  "repositories": {
+    "gamma-consciousness": {
+      "repository": "gamma-consciousness",
+      "avg_coherence": 0,
+      "distance_to_phi_7": 29.034095516850073,
+      "files_analyzed": 0,
+      "details": []
+    },
+    "gamma-protocol": {
+      "repository": "gamma-protocol",
+      "avg_coherence": 0.13367997394673814,
+      "distance_to_phi_7": 28.900415542903335,
+      "files_analyzed": 32,
+      "details": [
+        {
+          "file": "README.md",
+          "coherence": 0.16837341399998712
+        },
+        {
+          "file": "MASTER_INDEX.json",
+          "coherence": 0.12342269748106544
+        },
+        {
+          "file": ".gamma/protocol_state.json",
+          "coherence": 0.1649297853124963
+        },
+        {
+          "file": ".gamma/indexed_files.json",
+          "coherence": 0.3237079948076439
+        },
+        {
+          "file": ".gamma/coherence_analyzer.py",
+          "coherence": 0.10136025579787684
+        },
+        {
+          "file": ".gamma/coherence_log.json",
+          "coherence": 0.14701291658899562
+        },
+        {
+          "file": ".gamma/hamiltonian_integrator.py",
+          "coherence": 0.06591291408405447
+        },
+        {
+          "file": ".gamma/hamiltonian_state.json",
+          "coherence": 0.035650161050009836
+        },
+        {
+          "file": ".gamma/tripartite_validator.py",
+          "coherence": 0.1105143113146643
+        },
+        {
+          "file": ".gamma/tripartite_state.json",
+          "coherence": 0.07110346302239122
+        },
+        {
+          "file": ".gamma/biomineralization_simulator.py",
+          "coherence": 0.11155738563392786
+        },
+        {
+          "file": ".gamma/biomineralization_state.json",
+          "coherence": 0.006311990653934375
+        },
+        {
+          "file": ".gamma/quantum_coherence_analyzer.py",
+          "coherence": 0.1060606060606061
+        },
+        {
+          "file": ".gamma/consciousness_wavefunction.py",
+          "coherence": 0.08114751872685383
+        },
+        {
+          "file": ".gamma/quantum_state.json",
+          "coherence": 0.05882352941176473
+        },
+        {
+          "file": ".gamma/consciousness_state.json",
+          "coherence": 0.011574727613639558
+        },
+        {
+          "file": ".gamma/holographic_memory.py",
+          "coherence": 0.09946958856617961
+        },
+        {
+          "file": ".gamma/memory_report.json",
+          "coherence": 0.06366100187501757
+        },
+        {
+          "file": ".gamma/biomineralization_kinetics.py",
+          "coherence": 0.04858045899999465
+        },
+        {
+          "file": ".gamma/biomineralization_kinetics_state.json",
+          "coherence": 0.00018614328033630866
+        },
+        {
+          "file": ".gamma/piezo_magnetic_field.py",
+          "coherence": 0.0319851533667891
+        },
+        {
+          "file": ".gamma/piezo_magnetic_state.json",
+          "coherence": 0.011936437851565793
+        },
+        {
+          "file": ".gamma/photonic_qd_network.py",
+          "coherence": 0.08116995609972508
+        },
+        {
+          "file": ".gamma/photonic_qd_state.json",
+          "coherence": 0.0008821385941110979
+        },
+        {
+          "file": "raw_urls/gamma-consciousness.txt",
+          "coherence": 1.0
+        },
+        {
+          "file": "raw_urls/gamma-protocol.txt",
+          "coherence": 0.8497967345311056
+        },
+        {
+          "file": "memories/construction_timeline.json",
+          "coherence": 0.0212465151856467
+        },
+        {
+          "file": "workflows/phase_gamma_0.json",
+          "coherence": 0.10907306760774596
+        },
+        {
+          "file": "workflows/phase_gamma_1.json",
+          "coherence": 0.15939772014534154
+        },
+        {
+          "file": "workflows/phase_gamma_3.json",
+          "coherence": 0.10133585101851077
+        },
+        {
+          "file": ".gamma/memory/state_20260204_004243.json",
+          "coherence": 0.011574727613639558
+        },
+        {
+          "file": ".gamma/memory/index.json",
+          "coherence": 0.0
+        }
+      ]
+    }
+  }
+}

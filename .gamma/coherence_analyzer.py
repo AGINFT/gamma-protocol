@@ -1,102 +1,93 @@
-#!/usr/bin/env python3
 """
-Γ-Coherence Analyzer: Análisis de coherencia φ^(-n) holográfica
-Arquitectura: EPΩ-7 Semi-Autonomous Claude Agent Protocol
+Γ-Coherence Analyzer: φ⁷-convergent validation engine
+Validates Σφ^(-n) across all protocol modules
 """
 import json
 import math
 from pathlib import Path
-from datetime import datetime
+from typing import Dict, List
 
 PHI = 1.618033988749895
+PHI_INV = 0.618033988749895
 PHI_7 = 29.034095516850073
 
 class GammaCoherenceAnalyzer:
-    def __init__(self, protocol_root="/storage/emulated/0/Download/gamma-protocol"):
-        self.root = Path(protocol_root)
-        self.phi = PHI
-        self.phi_7 = PHI_7
+    def __init__(self, protocol_root: Path):
+        self.root = protocol_root
+        self.master_index = self._load_master_index()
         
-    def calculate_phi_factor(self, gamma_level):
-        """Calcula el factor φ^(-n) para nivel Γ-n"""
-        return self.phi ** (-gamma_level)
+    def _load_master_index(self) -> Dict:
+        index_path = self.root / "MASTER_INDEX.json"
+        with open(index_path) as f:
+            return json.load(f)
     
-    def analyze_repository_coherence(self, repo_name):
-        """Analiza coherencia de un repositorio indexado"""
-        manifest_path = self.root / "raw_urls" / f"{repo_name}.txt"
-        if not manifest_path.exists():
-            return {"error": f"Manifest not found for {repo_name}"}
+    def calculate_file_coherence(self, filepath: Path) -> float:
+        """φ^(-n) decay based on file depth and structure"""
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Metrics φ-weighted
+            lines = len(content.split('\n'))
+            gamma_refs = content.count('Γ') + content.count('gamma')
+            phi_refs = content.count('φ') + content.count('phi')
+            
+            # Coherence formula: Σφ^(-n) normalization
+            coherence = (gamma_refs * PHI_INV + phi_refs * PHI_INV**2) / max(lines, 1)
+            return min(coherence, 1.0)
+        except:
+            return 0.0
+    
+    def analyze_repository(self, repo_name: str) -> Dict:
+        """Recursive coherence analysis for repository"""
+        repo_info = next((r for r in self.master_index['repositories_indexed'] 
+                         if r['name'] == repo_name), None)
         
-        with open(manifest_path) as f:
-            urls = [line.strip() for line in f if line.strip()]
+        if not repo_info:
+            return {'error': 'Repository not found'}
         
-        total_files = len(urls)
-        phi_weighted_sum = sum(self.phi ** (-i) for i in range(total_files))
+        repo_path = self.root.parent / repo_name if repo_name != 'gamma-protocol' else self.root
         
-        coherence = phi_weighted_sum / total_files if total_files > 0 else 0
+        coherences = []
+        for file in repo_path.rglob('*'):
+            if file.is_file() and file.suffix in ['.json', '.py', '.md', '.txt']:
+                coh = self.calculate_file_coherence(file)
+                coherences.append({'file': str(file.relative_to(repo_path)), 'coherence': coh})
+        
+        avg_coherence = sum(c['coherence'] for c in coherences) / len(coherences) if coherences else 0
         
         return {
-            "repository": repo_name,
-            "total_files": total_files,
-            "phi_weighted_sum": phi_weighted_sum,
-            "coherence": coherence,
-            "phi_factor": self.calculate_phi_factor(1),
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            'repository': repo_name,
+            'avg_coherence': avg_coherence,
+            'distance_to_phi_7': PHI_7 - avg_coherence,
+            'files_analyzed': len(coherences),
+            'details': coherences
         }
     
-    def analyze_global_coherence(self):
-        """Analiza coherencia global del protocolo"""
-        master_index = self.root / "MASTER_INDEX.json"
+    def full_protocol_coherence(self) -> Dict:
+        """Complete Γ-protocol coherence state"""
+        results = {}
+        for repo in self.master_index['repositories_indexed']:
+            results[repo['name']] = self.analyze_repository(repo['name'])
         
-        with open(master_index) as f:
-            data = json.load(f)
-        
-        current_phase = data["current_phase"]["gamma_level"]
-        current_coherence = data["current_phase"]["coherence_phi"]
-        distance_to_phi_7 = data["current_phase"]["distance_to_phi_7"]
-        
-        repos = data["repositories_indexed"]
-        repo_coherences = []
-        
-        for repo in repos:
-            analysis = self.analyze_repository_coherence(repo["name"])
-            repo_coherences.append(analysis)
-        
-        # Coherencia global ponderada
-        total_coherence = sum(r.get("coherence", 0) for r in repo_coherences)
-        average_coherence = total_coherence / len(repo_coherences) if repo_coherences else 0
+        global_coherence = sum(r['avg_coherence'] for r in results.values()) / len(results)
         
         return {
-            "current_gamma_level": current_phase,
-            "current_coherence_phi": current_coherence,
-            "distance_to_phi_7": distance_to_phi_7,
-            "repositories": repo_coherences,
-            "global_average_coherence": average_coherence,
-            "next_target_coherence": self.calculate_phi_factor(current_phase + 1),
-            "convergence_progress": (self.phi_7 - distance_to_phi_7) / self.phi_7,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            'timestamp': self.master_index['last_update'],
+            'global_coherence': global_coherence,
+            'current_phi_level': self.master_index['current_phase']['coherence_phi'],
+            'target_gamma_2': 0.382,
+            'repositories': results
         }
-    
-    def save_coherence_log(self):
-        """Guarda log de coherencia temporal"""
-        analysis = self.analyze_global_coherence()
-        
-        log_path = self.root / ".gamma" / "coherence_log.json"
-        
-        if log_path.exists():
-            with open(log_path) as f:
-                logs = json.load(f)
-        else:
-            logs = {"phi_7_target": self.phi_7, "timeline": []}
-        
-        logs["timeline"].append(analysis)
-        
-        with open(log_path, 'w') as f:
-            json.dump(logs, f, indent=2)
-        
-        return analysis
 
-if __name__ == "__main__":
-    analyzer = GammaCoherenceAnalyzer()
-    result = analyzer.save_coherence_log()
-    print(json.dumps(result, indent=2))
+if __name__ == '__main__':
+    analyzer = GammaCoherenceAnalyzer(Path(__file__).parent.parent)
+    report = analyzer.full_protocol_coherence()
+    
+    print(json.dumps(report, indent=2))
+    
+    output_path = Path(__file__).parent / 'coherence_report.json'
+    with open(output_path, 'w') as f:
+        json.dump(report, f, indent=2)
+    
+    print(f"\n✓ Report saved: {output_path}")
