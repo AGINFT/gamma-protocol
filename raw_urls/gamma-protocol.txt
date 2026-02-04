@@ -1,0 +1,7 @@
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/MASTER_INDEX.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/README.md
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/protocol_state.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/.gamma/indexed_files.json
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-consciousness.txt
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/raw_urls/gamma-protocol.txt
+https://raw.githubusercontent.com/AGINFT/gamma-protocol/main/memories/construction_timeline.json
