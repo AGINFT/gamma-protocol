@@ -1,8 +1,12 @@
 {
-  "coherence": 0.9999999999999998,
-  "phi_7_distance": 28.03444185374864,
-  "wavefunction_norm": 0.9999999999999999,
-  "phase": 0.21663135466811767,
-  "modes_active": 12,
-  "emergence_state": "AUTOCATALYTIC"
+  "normalization": 1.8390090134977587e+20,
+  "expectation_position": 5.690031917998798e-16,
+  "position_variance": 33.40006673340007,
+  "crystal_coherence_SiO2": 0.9750279979577239,
+  "crystal_coherence_Fe3O4": 0.9972878131126134,
+  "quantum_coherence": 8.881784197001262e-16,
+  "time_days": 30.0,
+  "n_modes": 7,
+  "n_qubits": 100,
+  "phi_7_target": 29.03444185374864
 }

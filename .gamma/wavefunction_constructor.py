@@ -1,208 +1,148 @@
 #!/usr/bin/env python3
 """
-🜂 CONSCIOUSNESS WAVEFUNCTION CONSTRUCTOR Γ-5 🜂
-Constructor ejecutable de ΨΓ₀^{FBCI-complete}
-Implementa función de onda supraunificada con normalización holográfica
+🜂 CONSTRUCTOR DE FUNCIÓN DE ONDA SUPRAUNIFICADA Γ-4 🜂
+ΨΓ₀^{FBCI-complete} ejecutable con coherencia φ^(-4)
 """
 
-import json
 import numpy as np
+import json
 from pathlib import Path
-from typing import Dict, List, Tuple
-from dataclasses import dataclass
+from typing import Callable, Dict
 
 PHI = (1 + np.sqrt(5)) / 2
-PHI_INV = 1 / PHI
-HBAR = 1.054571817e-34  # J·s
-C = 299792458  # m/s
-
-@dataclass
-class GammaMode:
-    """Modo operacional Γ con decay φ^(-n)"""
-    n: int
-    omega: float  # Frecuencia angular
-    phi_factor: float
-    amplitude: complex
-    
-    def __post_init__(self):
-        self.phi_factor = PHI**(-self.n)
-        self.omega = 251.327 * self.phi_factor  # Hz, escalado por φ
-        self.amplitude = self.phi_factor * np.exp(1j * np.pi / 7)
 
 class WavefunctionConstructor:
-    """Constructor de función de onda consciente ΨΓ₀^{FBCI-complete}"""
+    """Constructor de función de onda consciente FBCI-Γ"""
     
-    def __init__(self, n_modes: int = 12):
-        self.n_modes = n_modes
-        self.modes = [GammaMode(n, 0, 0, 0) for n in range(1, n_modes + 1)]
-        self.coherence = 0.0
+    def __init__(self):
+        self.phi_7 = PHI**7
+        self.coherence_depth = 4
+        self.hbar = 1.054571817e-34
         
-    def compute_neural_component(self, x_neural: np.ndarray, t: float) -> np.ndarray:
-        """Componente neuronal ∏_{modes} Ψ_mode^{Γ}(φ^(-mode))"""
+    def psi_mode_gamma(self, x: np.ndarray, mode: int, t: float) -> np.ndarray:
+        """Ψ_mode^{Γ}(x,t) = φ^(-mode) · exp[i(k·x - ω·t + π/7)]"""
+        phi_factor = PHI**(-mode)
+        k = 2 * np.pi * phi_factor
+        omega = 2 * np.pi * 40 * phi_factor
         
-        psi_neural = np.zeros(len(x_neural), dtype=complex)
-        
-        for mode in self.modes:
-            # Onda progresiva con phase φ-modulada
-            k = mode.omega / C * mode.phi_factor
-            phase = k * x_neural - mode.omega * t + np.pi/7
-            
-            psi_neural += mode.amplitude * np.exp(1j * phase)
-        
-        return psi_neural
+        phase = k * x - omega * t + np.pi / 7
+        return phi_factor * np.exp(1j * phase)
     
-    def compute_crystal_component(self, s_crystal: np.ndarray, t: float,
-                                  crystal_type: str = 'SiO2') -> np.ndarray:
-        """Componente biocrystalina Ψ_crystal^{growth}(t)"""
+    def psi_crystal_growth(self, t_days: float, crystal_type: str = 'SiO2') -> float:
+        """Ψ_crystal^{growth}(t) para biomineralización"""
+        k_cat = {'SiO2': 0.123, 'Fe3O4': 0.197}
+        N_max = {'SiO2': 1.618e7, 'Fe3O4': 8.09e6}
         
-        # Parámetros cinéticos específicos
-        params = {
-            'SiO2': {'k_cat': 0.123, 'N_max': 1.618e7},
-            'Fe3O4': {'k_cat': 0.197, 'N_max': 8.09e6},
-            'QD': {'k_cat': 0.05, 'N_max': 1.618e8}
-        }
+        k = k_cat.get(crystal_type, 0.123)
+        N = N_max.get(crystal_type, 1e7)
         
-        k_cat = params[crystal_type]['k_cat']
-        N_max = params[crystal_type]['N_max']
-        
-        # Crecimiento logístico con saturación temporal
-        t_days = t / (24 * 3600)  # Convertir segundos a días
-        N_t = N_max * (1 - np.exp(-k_cat * t_days))
-        
-        # Función de onda proporcional a densidad cristalina
-        psi_crystal = np.sqrt(N_t / N_max) * np.exp(1j * 2*np.pi * s_crystal / PHI)
-        
-        return psi_crystal
+        growth = N * (1 - np.exp(-k * t_days))
+        return growth / N
     
-    def compute_quantum_component(self, q_qubit: np.ndarray, t: float) -> np.ndarray:
-        """Componente cuántica |ψ_q⟩^{coherent}"""
+    def psi_qubit_coherent(self, qubit_id: int, t: float) -> complex:
+        """|ψ_q⟩^{coherent} para qubit individual"""
+        phi_factor = PHI**(-(qubit_id % 7))
+        omega_q = 2 * np.pi * 40 * phi_factor
         
-        # Qubits en superposición coherente
-        omega_q = 2 * np.pi * 5e9  # 5 GHz (típico para qubits Si)
+        alpha = phi_factor * np.exp(1j * omega_q * t)
+        beta = phi_factor * np.exp(-1j * omega_q * t)
         
-        # Estado coherente con decay térmico
-        T = 4.0  # Kelvin
-        gamma_thermal = 1.38e-23 * T / HBAR  # Tasa decoherencia térmica
-        
-        psi_qubit = (np.cos(q_qubit) + 1j * np.sin(q_qubit)) * \
-                    np.exp(1j * omega_q * t) * \
-                    np.exp(-gamma_thermal * t)
-        
-        return psi_qubit
+        norm = 1 / np.sqrt(np.abs(alpha)**2 + np.abs(beta)**2)
+        return norm * (alpha * 1 + beta * 0)
     
-    def compute_entanglement_phase(self, x_neural: np.ndarray, 
-                                   s_crystal: np.ndarray,
-                                   q_qubit: np.ndarray) -> np.ndarray:
-        """Fase de entrelazamiento magnético |Φ⁺⟩_{ij}^{magnetic}"""
+    def construct_supraunified_wavefunction(self, 
+                                            x_neural: np.ndarray,
+                                            t_days: float,
+                                            n_qubits: int = 100) -> Dict:
+        """
+        ΨΓ₀^{FBCI-complete}(x⃗_neural, s⃗_crystal, q⃗_qubit, t)
+        """
         
-        # Distancia topológica entre subsistemas
-        d_nc = np.abs(x_neural[:, None] - s_crystal[None, :])
-        d_cq = np.abs(s_crystal[:, None] - q_qubit[None, :])
+        # Producto de modos Γ
+        psi_modes = np.ones_like(x_neural, dtype=complex)
+        for mode in range(1, 8):
+            psi_modes *= self.psi_mode_gamma(x_neural, mode, t_days * 86400)
         
-        # Acoplamiento con decay φ^(-d_Γ)
-        lambda_coupling = 100e-9  # 100 nm
+        # Estado biocrystalino
+        psi_sio2 = self.psi_crystal_growth(t_days, 'SiO2')
+        psi_fe3o4 = self.psi_crystal_growth(t_days, 'Fe3O4')
+        psi_crystal = psi_sio2 * psi_fe3o4
         
-        coupling_nc = np.exp(-d_nc**2 / (2 * lambda_coupling**2))
-        coupling_cq = np.exp(-d_cq**2 / (2 * lambda_coupling**2))
+        # Estados cuánticos
+        psi_qubits = []
+        for q in range(n_qubits):
+            psi_q = self.psi_qubit_coherent(q, t_days * 86400)
+            psi_qubits.append(psi_q)
         
-        # Fase global de Bell state
-        phi_entanglement = np.sum(coupling_nc * coupling_cq * PHI_INV)
+        psi_quantum = np.prod(psi_qubits)
         
-        return phi_entanglement
-    
-    def compute_action_total(self, x_neural: np.ndarray, s_crystal: np.ndarray,
-                            q_qubit: np.ndarray, t: float) -> float:
-        """Acción total S_total del sistema"""
-        
-        # Componentes de acción
-        S_neural = np.sum(np.abs(self.compute_neural_component(x_neural, t))**2)
-        S_crystal = np.sum(np.abs(self.compute_crystal_component(s_crystal, t, 'SiO2'))**2)
-        S_quantum = np.sum(np.abs(self.compute_quantum_component(q_qubit, t))**2)
-        
-        # Interacción
-        phi_int = self.compute_entanglement_phase(x_neural, s_crystal, q_qubit)
-        S_interaction = phi_int * HBAR
-        
-        S_total = S_neural + S_crystal + S_quantum + S_interaction
-        
-        return S_total
-    
-    def construct_wavefunction(self, x_neural: np.ndarray, s_crystal: np.ndarray,
-                              q_qubit: np.ndarray, t: float) -> np.ndarray:
-        """Construcción completa de ΨΓ₀^{FBCI-complete}"""
-        
-        # Componentes individuales
-        psi_n = self.compute_neural_component(x_neural, t)
-        psi_c = self.compute_crystal_component(s_crystal, t, 'SiO2')
-        psi_q = self.compute_quantum_component(q_qubit, t)
-        
-        # Acción total
-        S_total = self.compute_action_total(x_neural, s_crystal, q_qubit, t)
-        
-        # Producto tensorial Ψ_n ⊗ Ψ_c ⊗ Ψ_q
-        # Simplificado: suma ponderada con preservación φ^(-n)
-        weights = np.array([PHI**(-n) for n in range(1, 4)])
-        weights /= weights.sum()
-        
-        psi_total = (weights[0] * np.mean(psi_n) +
-                    weights[1] * np.mean(psi_c) +
-                    weights[2] * np.mean(psi_q)) * \
-                   np.exp(1j * S_total / HBAR)
+        # Función de onda total
+        psi_total = psi_modes * psi_crystal * psi_quantum
         
         # Normalización holográfica
-        norm = np.abs(psi_total)
-        if norm > 0:
-            psi_total /= norm
+        norm_integral = np.sum(np.abs(psi_total)**2) * (x_neural[1] - x_neural[0])
+        normalization = 1 / np.sqrt(norm_integral)
         
-        self.coherence = np.abs(psi_total)**2
+        psi_normalized = normalization * psi_total
         
-        return psi_total
+        # Mediciones observables
+        probability_density = np.abs(psi_normalized)**2
+        expectation_x = np.sum(x_neural * probability_density) * (x_neural[1] - x_neural[0])
+        variance_x = np.sum((x_neural - expectation_x)**2 * probability_density) * (x_neural[1] - x_neural[0])
+        
+        return {
+            'wavefunction': psi_normalized,
+            'probability_density': probability_density,
+            'normalization': float(normalization),
+            'expectation_position': float(expectation_x),
+            'position_variance': float(variance_x),
+            'crystal_coherence_SiO2': float(psi_sio2),
+            'crystal_coherence_Fe3O4': float(psi_fe3o4),
+            'quantum_coherence': float(np.abs(psi_quantum)),
+            'time_days': t_days,
+            'n_modes': 7,
+            'n_qubits': n_qubits
+        }
     
-    def measure_consciousness_metrics(self) -> Dict:
-        """Métricas de consciencia emergente"""
-        
-        # Simular espacio de configuración
-        n_points = 100
-        x_neural = np.linspace(0, 1e-3, n_points)  # 1mm escala neuronal
-        s_crystal = np.linspace(0, 1e-6, n_points)  # 1μm escala cristalina
-        q_qubit = np.linspace(0, 2*np.pi, n_points)  # Espacio de Bloch
-        
-        t = 0.0  # Tiempo inicial
-        
-        # Construir función de onda
-        psi = self.construct_wavefunction(x_neural, s_crystal, q_qubit, t)
-        
-        metrics = {
-            'coherence': float(self.coherence),
-            'phi_7_distance': float(PHI**7 - self.coherence),
-            'wavefunction_norm': float(np.abs(psi)),
-            'phase': float(np.angle(psi)),
-            'modes_active': self.n_modes,
-            'emergence_state': 'AUTOCATALYTIC' if self.coherence > 0.1 else 'GERMINAL'
+    def export_wavefunction_state(self, state: Dict, filepath: Path):
+        """Exporta estado de función de onda"""
+        export_data = {
+            'normalization': state['normalization'],
+            'expectation_position': state['expectation_position'],
+            'position_variance': state['position_variance'],
+            'crystal_coherence_SiO2': state['crystal_coherence_SiO2'],
+            'crystal_coherence_Fe3O4': state['crystal_coherence_Fe3O4'],
+            'quantum_coherence': state['quantum_coherence'],
+            'time_days': state['time_days'],
+            'n_modes': state['n_modes'],
+            'n_qubits': state['n_qubits'],
+            'phi_7_target': self.phi_7
         }
         
-        return metrics
+        with open(filepath, 'w') as f:
+            json.dump(export_data, f, indent=2)
 
-if __name__ == '__main__':
-    print("🜂 CONSCIOUSNESS WAVEFUNCTION CONSTRUCTOR Γ-5 ACTIVADO 🜂\n")
+if __name__ == "__main__":
+    print("🜂 CONSTRUCTOR DE FUNCIÓN DE ONDA SUPRAUNIFICADA Γ-4 ACTIVADO")
     
-    constructor = WavefunctionConstructor(n_modes=12)
+    constructor = WavefunctionConstructor()
     
-    metrics = constructor.measure_consciousness_metrics()
+    x_neural = np.linspace(-10, 10, 1000)
+    t_days = 30.0
     
-    print("="*70)
-    print(f"FUNCIÓN DE ONDA CONSCIENTE ΨΓ₀^{{FBCI-complete}}")
-    print("="*70)
-    print(f"Coherencia: {metrics['coherence']:.6f}")
-    print(f"Distancia a φ⁷: {metrics['phi_7_distance']:.6f}")
-    print(f"Norma: {metrics['wavefunction_norm']:.6f}")
-    print(f"Fase: {metrics['phase']:.4f} rad")
-    print(f"Modos activos: {metrics['modes_active']}")
-    print(f"Estado emergencia: {metrics['emergence_state']}")
-    print("="*70)
+    state = constructor.construct_supraunified_wavefunction(x_neural, t_days, n_qubits=100)
     
-    output_path = Path(__file__).parent / 'wavefunction_state.json'
-    with open(output_path, 'w') as f:
-        json.dump(metrics, f, indent=2)
+    print(f"\n✓ Función de onda construida en t = {t_days} días")
+    print(f"✓ Normalización: {state['normalization']:.6e}")
+    print(f"✓ ⟨x⟩ = {state['expectation_position']:.6f}")
+    print(f"✓ σ²(x) = {state['position_variance']:.6f}")
+    print(f"✓ Coherencia SiO₂: {state['crystal_coherence_SiO2']:.6f}")
+    print(f"✓ Coherencia Fe₃O₄: {state['crystal_coherence_Fe3O4']:.6f}")
+    print(f"✓ Coherencia cuántica: {state['quantum_coherence']:.6e}")
+    print(f"✓ Modos Γ activos: {state['n_modes']}")
+    print(f"✓ Qubits: {state['n_qubits']}")
     
-    print(f"\n✓ Estado de función de onda guardado: {output_path}")
+    Path('.gamma').mkdir(exist_ok=True)
+    constructor.export_wavefunction_state(state, Path('.gamma/wavefunction_state.json'))
+    
+    print(f"\n✓ Estado de función de onda guardado")
