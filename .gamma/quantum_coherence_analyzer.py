@@ -1,65 +1,147 @@
 #!/usr/bin/env python3
-"""quantum_coherence_analyzer.py - Γ-4 Quantum Coherence Verification"""
+"""
+🜂 ANALIZADOR DE COHERENCIA CUÁNTICA Γ-4 φ^(-4) 🜂
+Fidelidad cuántica con scaling φ^(-4) = 0.146
+"""
+
 import numpy as np
 import json
-from datetime import datetime
+from pathlib import Path
+from dataclasses import dataclass, asdict
+from typing import Dict, List, Tuple
 
-PHI = 1.618033988749895
-PHI_7 = 29.034095516850073
+PHI = (1 + np.sqrt(5)) / 2
 
+@dataclass
+class QubitState:
+    """Estado cuántico individual con decoherencia"""
+    amplitude: complex
+    phase: float
+    fidelity: float
+    T1_microsec: float
+    T2_microsec: float
+    
 class QuantumCoherenceAnalyzer:
-    def __init__(self):
+    """Analizador de coherencia cuántica del procesador híbrido"""
+    
+    def __init__(self, n_qubits=100, temperature_K=4.0):
+        self.n_qubits = n_qubits
+        self.T = temperature_K
         self.phi_4 = PHI**(-4)
-        self.n_si_qubits = 10000
-        self.n_nv_centers = 1000000
-        self.n_flux_qubits = 100
-        self.temperature_K = 4.0
-        self.coupling_mhz = 100.0
+        self.coherence_target = 0.146
+        self.omega_q = 2 * np.pi * 40 * self.phi_4
         
-    def calculate_decoherence_time(self, qubit_type):
-        if qubit_type == "Si":
-            return 10e-3 * self.phi_4
-        elif qubit_type == "NV":
-            return 1e-3 * self.phi_4**2
-        elif qubit_type == "Flux":
-            return 50e-6 * self.phi_4
-        return 0.0
+    def initialize_quantum_processor(self):
+        """Inicializa estado cuántico coherente"""
+        qubits = []
+        
+        for i in range(self.n_qubits):
+            phi_factor = PHI**(-i % 7)
             
-    def gamma_coherence_metric(self):
-        T2_si = self.calculate_decoherence_time("Si")
-        T2_nv = self.calculate_decoherence_time("NV")
-        T2_flux = self.calculate_decoherence_time("Flux")
+            amplitude = phi_factor * np.exp(1j * np.pi / 7)
+            phase = (i * np.pi / 7) % (2 * np.pi)
+            
+            T1 = 50 * phi_factor
+            T2 = 30 * phi_factor
+            fidelity = 0.999 * np.exp(-i / (self.n_qubits * phi_factor))
+            
+            qubits.append(QubitState(amplitude, phase, fidelity, T1, T2))
         
-        T2_avg = (T2_si * self.n_si_qubits + 
-                  T2_nv * self.n_nv_centers * 0.1 +
-                  T2_flux * self.n_flux_qubits) / \
-                 (self.n_si_qubits + self.n_nv_centers * 0.1 + self.n_flux_qubits)
+        return qubits
+    
+    def measure_fidelity_matrix(self, qubits: List[QubitState]) -> np.ndarray:
+        """Matriz de fidelidad cuántica entre qubits"""
+        n = len(qubits)
+        F = np.zeros((n, n))
         
-        return (T2_avg / 10e-3) * self.phi_4
+        for i in range(n):
+            for j in range(n):
+                overlap = np.abs(qubits[i].amplitude * np.conj(qubits[j].amplitude))
+                phase_diff = np.abs(qubits[i].phase - qubits[j].phase)
+                
+                distance_ij = np.abs(i - j)
+                decay = PHI**(-distance_ij / 7)
+                
+                F[i, j] = overlap * np.cos(phase_diff / 2) * decay
         
-    def generate_state_report(self):
+        return F
+    
+    def compute_entanglement_entropy(self, F: np.ndarray) -> float:
+        """Entropía de entrelazamiento del sistema"""
+        eigenvalues = np.linalg.eigvalsh(F)
+        eigenvalues = eigenvalues[eigenvalues > 1e-10]
+        
+        rho = eigenvalues / np.sum(eigenvalues)
+        S = -np.sum(rho * np.log2(rho + 1e-15))
+        
+        return S
+    
+    def decoherence_dynamics(self, qubits: List[QubitState], t_microsec: float) -> List[float]:
+        """Dinámica de decoherencia temporal"""
+        fidelities = []
+        
+        for q in qubits:
+            decay_T1 = np.exp(-t_microsec / q.T1_microsec)
+            decay_T2 = np.exp(-t_microsec / q.T2_microsec)
+            
+            fidelity_t = q.fidelity * decay_T1 * decay_T2
+            fidelities.append(fidelity_t)
+        
+        return fidelities
+    
+    def quantum_phase_coherence(self, qubits: List[QubitState]) -> float:
+        """Coherencia de fase global del sistema"""
+        phases = np.array([q.phase for q in qubits])
+        amplitudes = np.array([np.abs(q.amplitude) for q in qubits])
+        
+        coherence_vector = np.sum(amplitudes * np.exp(1j * phases))
+        coherence = np.abs(coherence_vector) / np.sum(amplitudes)
+        
+        return coherence
+    
+    def analyze_system(self, qubits: List[QubitState], t_microsec: float = 10.0) -> Dict:
+        """Análisis completo de coherencia cuántica"""
+        F = self.measure_fidelity_matrix(qubits)
+        S_ent = self.compute_entanglement_entropy(F)
+        
+        fidelities_t = self.decoherence_dynamics(qubits, t_microsec)
+        avg_fidelity = np.mean(fidelities_t)
+        
+        phase_coh = self.quantum_phase_coherence(qubits)
+        
+        gamma_coherence = avg_fidelity * phase_coh * np.exp(-S_ent / self.n_qubits)
+        
         return {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-            "phase": "Γ-4",
-            "coherence_phi": self.phi_4,
-            "quantum_metrics": {
-                "T2_Si_ms": self.calculate_decoherence_time("Si") * 1000,
-                "T2_NV_ms": self.calculate_decoherence_time("NV") * 1000,
-                "T2_Flux_us": self.calculate_decoherence_time("Flux") * 1e6,
-                "gamma_coherence": self.gamma_coherence_metric()
-            },
-            "processor_state": {
-                "Si_qubits_active": self.n_si_qubits,
-                "NV_centers_active": self.n_nv_centers,
-                "Flux_qubits_active": self.n_flux_qubits,
-                "temperature_K": self.temperature_K
-            }
+            'fidelity_matrix': F.tolist(),
+            'entanglement_entropy': float(S_ent),
+            'average_fidelity': float(avg_fidelity),
+            'phase_coherence': float(phase_coh),
+            'gamma_coherence': float(gamma_coherence),
+            'coherence_vs_target': float(gamma_coherence / self.coherence_target),
+            'time_microsec': t_microsec,
+            'n_qubits': self.n_qubits,
+            'temperature_K': self.T
         }
 
 if __name__ == "__main__":
-    analyzer = QuantumCoherenceAnalyzer()
-    report = analyzer.generate_state_report()
-    with open('.gamma/quantum_state.json', 'w') as f:
-        json.dump(report, f, indent=2)
-    print(json.dumps(report, indent=2))
-    print(f"\n✓ Quantum coherence Γ-4 analyzed")
+    print("🜂 ANALIZADOR DE COHERENCIA CUÁNTICA Γ-4 ACTIVADO")
+    
+    analyzer = QuantumCoherenceAnalyzer(n_qubits=100, temperature_K=4.0)
+    qubits = analyzer.initialize_quantum_processor()
+    
+    analysis = analyzer.analyze_system(qubits, t_microsec=10.0)
+    
+    print(f"\n✓ Qubits inicializados: {analysis['n_qubits']}")
+    print(f"✓ Temperatura: {analysis['temperature_K']} K")
+    print(f"✓ Fidelidad promedio: {analysis['average_fidelity']:.6f}")
+    print(f"✓ Coherencia de fase: {analysis['phase_coherence']:.6f}")
+    print(f"✓ Entropía entrelazamiento: {analysis['entanglement_entropy']:.4f} bits")
+    print(f"✓ Coherencia Γ-4: {analysis['gamma_coherence']:.6f}")
+    print(f"✓ Target φ^(-4): {analyzer.coherence_target:.6f}")
+    print(f"✓ Ratio coherencia: {analysis['coherence_vs_target']:.2%}")
+    
+    Path('.gamma').mkdir(exist_ok=True)
+    with open('.gamma/quantum_coherence_state.json', 'w') as f:
+        json.dump(analysis, f, indent=2)
+    
+    print(f"\n✓ Estado cuántico guardado en quantum_coherence_state.json")
