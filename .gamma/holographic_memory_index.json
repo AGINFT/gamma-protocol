@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-02-16T19:02:16.388422",
+  "total_memories": 1,
+  "depth_distribution": {
+    "4": 1
+  },
+  "coherence_evolution": {
+    "initial_coherence": 0.7830013279401841,
+    "final_coherence": 0.7830013279401841,
+    "total_growth": 0,
+    "time_span_seconds": 0,
+    "growth_rate_per_second": 0
+  },
+  "phi_4_target": 0.146
+}
