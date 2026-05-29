@@ -1,0 +1,10 @@
+{
+  "task_id": "VERIFY_LADON_PING",
+  "commands": [
+    "id",
+    "hostname",
+    "uptime",
+    "ls -la /tmp"
+  ],
+  "ts": 1780073000.0
+}
